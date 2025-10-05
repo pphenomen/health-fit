@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">HealthFit</string>
     <string name="login_hint">Логин</string>
@@ -9,6 +10,25 @@
     <string name="lunch_title">Обед</string>
     <string name="dinner_title">Ужин</string>
     <string name="snack_title">Перекус</string>
-    <string name="kbju_placeholder">Калории: 0, Б: 0, Ж: 0, У: 0</string>
+    <string name="calories_label">Калории: %d</string>
+    <string name="total_calories_label"></string>
+    <string name="calories_value">%d ккал</string>
+    <string name="kbju_format">Белки: %.1fг, Жиры: %.1fг, Углеводы: %.1fг</string>
+    <string name="food_weight">%d г</string>
+    <string name="category_label">Категория: %s</string>
     <string name="add_button">+</string>
+    <string name="food_name">Продукт</string>
+    <string name="food_icon">Иконка продукта</string>
+    <string name="food_info">Информация о продукте</string>
+    <string name="app_description">Health приложение помогает вести дневник питания и контролировать калории. Вы можете добавлять продукты, смотреть КБЖУ и отслеживать прогресс.</string>
+    <string name="app_version">Версия: 1.0</string>
+    <string name="about_title">О приложении</string>
+    <string name="dialog_food_title">Выберите продукт</string>
+    <string name="dialog_weight_title">Укажите вес</string>
+    <string name="dialog_weight_hint">Введите вес (граммы)</string>
+    <string name="dialog_ok">OK</string>
+    <string name="dialog_cancel">Отмена</string>
+    <string name="dialog_close">Закрыть</string>
+    <string name="food_added_toast">Продукт добавлен</string>
+    <string name="food_card_format">%s (%d г) — %d ккал</string>
 </resources>

@@ -11,7 +11,6 @@
     <string name="dinner_title">Ужин</string>
     <string name="snack_title">Перекус</string>
     <string name="calories_label">Калории: %d</string>
-    <string name="total_calories_label"></string>
     <string name="calories_value">%d ккал</string>
     <string name="kbju_format">Белки: %.1fг, Жиры: %.1fг, Углеводы: %.1fг</string>
     <string name="food_weight">%d г</string>
@@ -31,4 +30,12 @@
     <string name="dialog_close">Закрыть</string>
     <string name="food_added_toast">Продукт добавлен</string>
     <string name="food_card_format">%s (%d г) — %d ккал</string>
+    <string name="change_language">Изменить язык</string>
+    <string name="breakfast_icon">Иконка завтрака</string>
+    <string name="add_product_icon">Добавить продукт</string>
+    <string name="arrow_down_icon">Раскрыть продукты</string>
+    <string name="lunch_icon">Иконка обеда</string>
+    <string name="dinner_icon">Иконка ужина</string>
+    <string name="snack_icon">Иконка перекуса</string>
+
 </resources>

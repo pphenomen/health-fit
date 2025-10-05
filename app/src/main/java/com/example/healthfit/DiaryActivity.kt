@@ -1,14 +1,20 @@
 package com.example.healthfit
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.InputType
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
-import android.view.View
+import androidx.core.view.isGone
+import java.util.*
 
 class DiaryActivity : AppCompatActivity() {
 
@@ -95,9 +101,15 @@ class DiaryActivity : AppCompatActivity() {
 
     private fun setupToggle(container: LinearLayout, toggleButton: ImageButton) {
         toggleButton.setOnClickListener {
-            if (container.visibility == View.GONE) {
+            if (container.isGone) {
                 container.visibility = View.VISIBLE
                 toggleButton.setImageResource(R.drawable.arrow_up)
+                for (i in 0 until container.childCount) {
+                    val card = container.getChildAt(i)
+                    val animation = AnimationUtils.loadAnimation(this, R.anim.food_card_appear)
+                    animation.startOffset = (i * 50L)
+                    card.startAnimation(animation)
+                }
             } else {
                 container.visibility = View.GONE
                 toggleButton.setImageResource(R.drawable.arrow_down)
@@ -105,15 +117,27 @@ class DiaryActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_about -> {
                 startActivity(Intent(this, AboutActivity::class.java))
+                true
+            }
+            R.id.menu_change_language -> {
+                val locale = if (resources.configuration.locale.language == "ru") {
+                    Locale("en") // Переключаем на английский
+                } else {
+                    Locale("ru") // Переключаем на русский
+                }
+                val config = Configuration(resources.configuration)
+                config.setLocale(locale)
+                resources.updateConfiguration(config, resources.displayMetrics)
+                recreate() // Пересоздаём активность для применения языка
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -171,6 +195,9 @@ class DiaryActivity : AppCompatActivity() {
 
         icon.setImageResource(getCategoryIconRes(food.category))
         text.text = getString(R.string.food_card_format, food.name, food.weight, food.calories)
+
+        val animation = AnimationUtils.loadAnimation(this, R.anim.food_card_appear)
+        card.startAnimation(animation)
 
         btnDetails.setOnClickListener { showFoodDetailsDialog(food) }
 

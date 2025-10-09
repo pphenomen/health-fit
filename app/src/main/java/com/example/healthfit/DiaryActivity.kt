@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
 import java.util.*
+import androidx.core.content.edit
 
 class DiaryActivity : AppCompatActivity() {
 
@@ -41,6 +42,10 @@ class DiaryActivity : AppCompatActivity() {
     private lateinit var containerSnack: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val pref = getSharedPreferences("prefs", MODE_PRIVATE)
+        val isDark = pref.getBoolean("dark_theme", false)
+        setTheme(if (isDark) R.style.Theme_HealthFit_Dark else R.style.Theme_HealthFit)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_diary)
 
@@ -124,24 +129,32 @@ class DiaryActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.menu_about -> {
-                startActivity(Intent(this, AboutActivity::class.java))
+            R.id.action_theme -> {
+                val pref = getSharedPreferences("prefs", MODE_PRIVATE)
+                val isDark = !pref.getBoolean("dark_theme", false)
+                pref.edit { putBoolean("dark_theme", isDark) }
+                recreate()
                 true
             }
             R.id.menu_change_language -> {
-                val locale = if (resources.configuration.locale.language == "ru") {
-                    Locale("en") // Переключаем на английский
+                if (resources.configuration.locale.language == "ru") {
+                    setLocale("en")
                 } else {
-                    Locale("ru") // Переключаем на русский
+                    setLocale("ru")
                 }
-                val config = Configuration(resources.configuration)
-                config.setLocale(locale)
-                resources.updateConfiguration(config, resources.displayMetrics)
-                recreate() // Пересоздаём активность для применения языка
+                recreate()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun setLocale(lang: String) {
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     private fun showFoodDialog(

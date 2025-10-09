@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.HealthFit.Splash" parent="Theme.SplashScreen">
+    <style name="Theme.HealthFit.Splash" parent="Theme.AppCompat">
         <item name="windowSplashScreenBackground">@color/background_main</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/healthfit</item>
         <item name="windowSplashScreenAnimationDuration">500</item>
         <item name="postSplashScreenTheme">@style/Theme.HealthFit</item>
     </style>
 
-    <style name="Theme.HealthFit" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+    <style name="Theme.HealthFit" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/teal_200</item>
+        <item name="colorPrimaryDark">@color/purple_700</item>
+        <item name="colorAccent">@color/teal_200</item>
+        <item name="android:windowBackground">@color/background_main</item>
         <item name="android:statusBarColor">@color/purple_700</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/black</item>
+        <item name="cardBackgroundColor">@color/card_background_light</item>
+    </style>
+
+    <style name="Theme.HealthFit.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/teal_200</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/teal_200</item>
+        <item name="android:windowBackground">@color/background_main_dark</item>
+        <item name="android:statusBarColor">@color/blue</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="cardBackgroundColor">@color/card_background_dark</item>
     </style>
 </resources>

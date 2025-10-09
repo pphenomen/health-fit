@@ -48,5 +48,6 @@
     <string name="lunch_icon">Иконка обеда</string>
     <string name="dinner_icon">Иконка ужина</string>
     <string name="snack_icon">Иконка перекуса</string>
+    <string name="change_theme">Сменить тему</string>
 
 </resources>

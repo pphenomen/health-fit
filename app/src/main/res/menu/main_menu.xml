@@ -5,4 +5,7 @@
     <item
         android:id="@+id/menu_change_language"
         android:title="@string/change_language" />
+    <item
+        android:id="@+id/action_theme"
+        android:title="@string/change_theme" />
 </menu>

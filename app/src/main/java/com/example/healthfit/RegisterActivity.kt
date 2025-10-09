@@ -33,15 +33,15 @@ class RegisterActivity : AppCompatActivity() {
 
             when {
                 login.isBlank() -> {
-                    loginLayout.error = getString(R.string.login_warning)
+                    loginLayout.error = getString(R.string.enter_login)
                     return@setOnClickListener
                 }
                 password.isBlank() -> {
-                    passwordLayout.error = getString(R.string.password_warning)
+                    passwordLayout.error = getString(R.string.enter_password)
                     return@setOnClickListener
                 }
                 confirmPassword.isBlank() -> {
-                    confirmPasswordLayout.error = getString(R.string.password_warning)
+                    confirmPasswordLayout.error = getString(R.string.enter_password)
                     return@setOnClickListener
                 }
                 !VALID_INPUT_PATTERN.matcher(login).matches() -> {

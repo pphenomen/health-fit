@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 
 class LoginActivity : AppCompatActivity() {
@@ -16,8 +17,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val loginLayout = findViewById<EditText>(R.id.editLogin)
-        val passwordLayout = findViewById<EditText>(R.id.editPassword)
+        val loginLayout = findViewById<TextInputLayout>(R.id.inputLogin)
+        val passwordLayout = findViewById<TextInputLayout>(R.id.inputPassword)
         val buttonLogin = findViewById<Button>(R.id.buttonLogin)
         val linkRegister = findViewById<TextView>(R.id.registerLink)
 
@@ -27,19 +28,19 @@ class LoginActivity : AppCompatActivity() {
         }
 
         buttonLogin.setOnClickListener { view ->
-            val login = loginLayout.text.toString().trim()
-            val password = passwordLayout.text.toString().trim()
+            val login = loginLayout.editText?.text.toString().trim()
+            val password = passwordLayout.editText?.text.toString().trim()
 
             loginLayout.error = null
             passwordLayout.error = null
 
             when {
                 login.isBlank() -> {
-                    loginLayout.error = getString(R.string.login_warning)
+                    loginLayout.error = getString(R.string.enter_login)
                     return@setOnClickListener
                 }
                 password.isBlank() -> {
-                    passwordLayout.error = getString(R.string.password_warning)
+                    passwordLayout.error = getString(R.string.enter_password)
                     return@setOnClickListener
                 }
                 !VALID_INPUT_PATTERN.matcher(login).matches() -> {

@@ -7,8 +7,8 @@
     <string name="register_button">Sign Up</string>
     <string name="register_link">No account? Register</string>
     <string name="login_link">Already have an account?</string>
-    <string name="login_warning">Enter login</string>
-    <string name="password_warning">Enter password</string>
+    <string name="enter_login">Enter login</string>
+    <string name="enter_password">Enter password</string>
     <string name="fields_warning">Fill all fields</string>
     <string name="login_success">Login success</string>
     <string name="register_success">Register success</string>

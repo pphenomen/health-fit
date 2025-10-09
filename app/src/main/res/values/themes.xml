@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Healthfit" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.HealthFit.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background_main</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/healthfit</item>
+        <item name="windowSplashScreenAnimationDuration">500</item>
+        <item name="postSplashScreenTheme">@style/Theme.HealthFit</item>
+    </style>
+
+    <style name="Theme.HealthFit" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:statusBarColor">@color/purple_700</item>
     </style>
 </resources>

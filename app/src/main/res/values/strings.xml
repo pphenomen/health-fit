@@ -8,8 +8,8 @@
     <string name="register_button">Зарегистрироваться</string>
     <string name="register_link">Нет аккаунта? Зарегистрироваться</string>
     <string name="login_link">Уже есть аккаунт? Войти</string>
-    <string name="login_warning">Введите логин</string>
-    <string name="password_warning">Введите пароль</string>
+    <string name="enter_login">Введите логин</string>
+    <string name="enter_password">Введите пароль</string>
     <string name="fields_warning">Заполните все поля</string>
     <string name="login_success">Вход выполнен</string>
     <string name="register_success">Регистрация успешна</string>

@@ -3,143 +3,89 @@ package com.example.healthfit
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.view.animation.AnimationUtils
-import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.cardview.widget.CardView
-import androidx.core.view.isGone
-import java.util.*
 import androidx.core.content.edit
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.Button
-import android.widget.Spinner
-import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
-import com.example.healthfit.R
+import com.example.healthfit.databinding.ActivityDiaryBinding
+import java.util.*
 
 class DiaryActivity : AppCompatActivity() {
 
-    private val morningList = mutableListOf<Food>()
-    private val lunchList = mutableListOf<Food>()
-    private val dinnerList = mutableListOf<Food>()
-    private val snackList = mutableListOf<Food>()
-
-    private lateinit var totalMorning: TextView
-    private lateinit var totalLunch: TextView
-    private lateinit var totalDinner: TextView
-    private lateinit var totalSnack: TextView
-    private lateinit var totalDay: TextView
-
-    private lateinit var morningKBJU: TextView
-    private lateinit var lunchKBJU: TextView
-    private lateinit var dinnerKBJU: TextView
-    private lateinit var snackKBJU: TextView
-    private lateinit var totalKBJU: TextView
-
-    private lateinit var containerMorning: LinearLayout
-    private lateinit var containerLunch: LinearLayout
-    private lateinit var containerDinner: LinearLayout
-    private lateinit var containerSnack: LinearLayout
+    private lateinit var binding: ActivityDiaryBinding
+    private val mealManagers = mutableListOf<MealManager>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val pref = getSharedPreferences("prefs", MODE_PRIVATE)
-        val isDark = pref.getBoolean("dark_theme", false)
-        setTheme(if (isDark) R.style.Theme_HealthFit_Dark else R.style.Theme_HealthFit)
-
+        applyTheme()
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_diary)
+        binding = ActivityDiaryBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = getString(R.string.app_name)
-
-        containerMorning = findViewById(R.id.containerMorning)
-        containerLunch = findViewById(R.id.containerLunch)
-        containerDinner = findViewById(R.id.containerDinner)
-        containerSnack = findViewById(R.id.containerSnack)
-
-        totalMorning = findViewById(R.id.morningCalories)
-        totalLunch = findViewById(R.id.lunchCalories)
-        totalDinner = findViewById(R.id.dinnerCalories)
-        totalSnack = findViewById(R.id.snackCalories)
-        totalDay = findViewById(R.id.dayCalories)
-
-        morningKBJU = findViewById(R.id.morningKBJU)
-        lunchKBJU = findViewById(R.id.lunchKBJU)
-        dinnerKBJU = findViewById(R.id.dinnerKBJU)
-        snackKBJU = findViewById(R.id.snackKBJU)
-        totalKBJU = findViewById(R.id.dayKBJU)
-
-        findViewById<ImageButton>(R.id.btnAddMorning).setOnClickListener {
-            showFoodDialog(morningList, containerMorning, totalMorning, morningKBJU)
-        }
-        findViewById<ImageButton>(R.id.btnAddLunch).setOnClickListener {
-            showFoodDialog(lunchList, containerLunch, totalLunch, lunchKBJU)
-        }
-        findViewById<ImageButton>(R.id.btnAddDinner).setOnClickListener {
-            showFoodDialog(dinnerList, containerDinner, totalDinner, dinnerKBJU)
-        }
-        findViewById<ImageButton>(R.id.btnAddSnack).setOnClickListener {
-            showFoodDialog(snackList, containerSnack, totalSnack, snackKBJU)
-        }
-
-        setupToggle(containerMorning, findViewById(R.id.btnToggleMorning))
-        setupToggle(containerLunch, findViewById(R.id.btnToggleLunch))
-        setupToggle(containerDinner, findViewById(R.id.btnToggleDinner))
-        setupToggle(containerSnack, findViewById(R.id.btnToggleSnack))
-
+        setupToolbar()
+        setupMealManagers()
         resetTotals()
     }
 
+    // применяет сохраненную тему (светлую/темную)
+    private fun applyTheme() {
+        val pref = getSharedPreferences("prefs", MODE_PRIVATE)
+        val isDark = pref.getBoolean("dark_theme", false)
+        setTheme(if (isDark) R.style.Theme_HealthFit_Dark else R.style.Theme_HealthFit)
+    }
+
+    // настраивает тулбар
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = getString(R.string.app_name)
+    }
+
+    // инициализирует менеджеры для каждого приема пищи
+    private fun setupMealManagers() {
+        val dialogManager = DialogManager(this)
+
+        mealManagers.add(
+            MealManager(this, binding.morningSection, dialogManager, getString(R.string.morning_title), R.drawable.breakfast) { updateDayTotal() }
+        )
+        mealManagers.add(
+            MealManager(this, binding.lunchSection, dialogManager, getString(R.string.lunch_title), R.drawable.lunch) { updateDayTotal() }
+        )
+        mealManagers.add(
+            MealManager(this, binding.dinnerSection, dialogManager, getString(R.string.dinner_title), R.drawable.dinner) { updateDayTotal() }
+        )
+        mealManagers.add(
+            MealManager(this, binding.snackSection, dialogManager, getString(R.string.snack_title), R.drawable.snack) { updateDayTotal() }
+        )
+    }
+
+    // обновляет итоговые значения калорий и бжу за весь день
+    private fun updateDayTotal() {
+        val allFoods = mealManagers.flatMap { it.getFoods() }
+        binding.dayCalories.text = getString(R.string.calories_value, allFoods.totalCalories())
+        binding.dayKBJU.text = getString(
+            R.string.kbju_format,
+            allFoods.totalProtein(),
+            allFoods.totalFat(),
+            allFoods.totalCarbs()
+        )
+    }
+
+    // сбрасывает все счетчики
     private fun resetTotals() {
-        morningKBJU.text = getString(R.string.kbju_format, 0.0f, 0.0f, 0.0f)
-        lunchKBJU.text = getString(R.string.kbju_format, 0.0f, 0.0f, 0.0f)
-        dinnerKBJU.text = getString(R.string.kbju_format, 0.0f, 0.0f, 0.0f)
-        snackKBJU.text = getString(R.string.kbju_format, 0.0f, 0.0f, 0.0f)
-        totalKBJU.text = getString(R.string.kbju_format, 0.0f, 0.0f, 0.0f)
-        totalMorning.text = getString(R.string.calories_value, 0)
-        totalLunch.text = getString(R.string.calories_value, 0)
-        totalDinner.text = getString(R.string.calories_value, 0)
-        totalSnack.text = getString(R.string.calories_value, 0)
-        totalDay.text = getString(R.string.calories_value, 0)
+        mealManagers.forEach { it.reset() }
+        updateDayTotal()
     }
 
-    private fun setupToggle(container: LinearLayout, toggleButton: ImageButton) {
-        toggleButton.setOnClickListener {
-            if (container.isGone) {
-                container.visibility = View.VISIBLE
-                toggleButton.setImageResource(R.drawable.arrow_up)
-                for (i in 0 until container.childCount) {
-                    val card = container.getChildAt(i)
-                    val animation = AnimationUtils.loadAnimation(this, R.anim.food_card_appear)
-                    animation.startOffset = (i * 50L)
-                    card.startAnimation(animation)
-                }
-            } else {
-                container.visibility = View.GONE
-                toggleButton.setImageResource(R.drawable.arrow_down)
-            }
-        }
-    }
-
+    // создает меню в тулбаре
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
+    // обрабатывает нажатия на элементы меню
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_about -> {
-                val intent = Intent(this, AboutActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, AboutActivity::class.java))
                 true
             }
             R.id.action_theme -> {
@@ -150,11 +96,7 @@ class DiaryActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_change_language -> {
-                if (resources.configuration.locale.language == "ru") {
-                    setLocale("en")
-                } else {
-                    setLocale("ru")
-                }
+                setLocale(if (resources.configuration.locale.language == "ru") "en" else "ru")
                 recreate()
                 true
             }
@@ -162,213 +104,12 @@ class DiaryActivity : AppCompatActivity() {
         }
     }
 
+    // устанавливает новую локаль для приложения
     private fun setLocale(lang: String) {
         val locale = Locale(lang)
         Locale.setDefault(locale)
-        val config = Configuration()
+        val config = resources.configuration
         config.setLocale(locale)
         resources.updateConfiguration(config, resources.displayMetrics)
-    }
-
-    private fun showFoodDialog(
-        targetList: MutableList<Food>,
-        container: LinearLayout,
-        sectionTotal: TextView,
-        sectionKBJU: TextView
-    ) {
-        val dialogView = layoutInflater.inflate(R.layout.food_list, null)
-        val listView = dialogView.findViewById<ListView>(R.id.foodListView)
-        val searchInput = dialogView.findViewById<EditText>(R.id.foodSearchInput)
-        val btnAddCustom = dialogView.findViewById<Button>(R.id.btnAddCustom)
-
-        var filteredFoods = FoodDatabase.availableFoods.toList()
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_1,
-            filteredFoods.map { it.name }
-        )
-        listView.adapter = adapter
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle(R.string.dialog_food_title)
-            .setView(dialogView)
-            .setNegativeButton(R.string.dialog_cancel, { dialogInterface, which -> dialogInterface.dismiss() })
-            .create()
-
-        searchInput.addTextChangedListener { editable ->
-            val query = editable.toString().trim().lowercase()
-            filteredFoods = if (query.isEmpty()) {
-                FoodDatabase.availableFoods.toList()
-            } else {
-                FoodDatabase.availableFoods.filter { it.name.lowercase().contains(query) }
-            }
-
-            adapter.clear()
-            adapter.addAll(filteredFoods.map { it.name })
-            adapter.notifyDataSetChanged()
-        }
-
-        listView.setOnItemClickListener { parent, view, position, id ->
-            dialog.dismiss()
-            val selectedFood = filteredFoods[position]
-
-            val input = EditText(this)
-            input.hint = getString(R.string.dialog_weight_hint)
-            input.inputType = InputType.TYPE_CLASS_NUMBER
-
-            AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_weight_title)
-                .setView(input)
-                .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                    val grams = input.text.toString().toIntOrNull() ?: 100
-                    val existing = targetList.find { it.name == selectedFood.name }
-                    val foodToAdd = selectedFood.copy(weight = grams)
-                    if (existing != null) existing.weight += grams
-                    else targetList.add(foodToAdd)
-
-                    refreshSection(container, targetList)
-                    updateSectionTotal(targetList, sectionTotal, sectionKBJU)
-                    updateDayTotal()
-
-                    Toast.makeText(this, R.string.food_added_toast, Toast.LENGTH_SHORT).show()
-                }
-                .setNegativeButton(R.string.dialog_cancel, null)
-                .show()
-        }
-        btnAddCustom.setOnClickListener {
-            dialog.dismiss()
-            showCustomFoodDialog()
-        }
-
-        dialog.show()
-    }
-
-    private fun showCustomFoodDialog() {
-        val categoryNames = listOf(*resources.getStringArray(R.array.food_categories), getString(R.string.category_other))
-
-        val dialogView = layoutInflater.inflate(R.layout.add_custom_food, null)
-
-        val inputName = dialogView.findViewById<EditText>(R.id.inputFoodName)
-        val inputCalories = dialogView.findViewById<EditText>(R.id.inputCalories)
-        val inputProtein = dialogView.findViewById<EditText>(R.id.inputProtein)
-        val inputFat = dialogView.findViewById<EditText>(R.id.inputFat)
-        val inputCarbs = dialogView.findViewById<EditText>(R.id.inputCarbs)
-        val spinnerCategory = dialogView.findViewById<Spinner>(R.id.spinnerCategory)
-
-        // Setup Spinner
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categoryNames)
-        spinnerCategory.adapter = adapter
-
-        AlertDialog.Builder(this)
-            .setTitle(R.string.dialog_custom_food_title)
-            .setView(dialogView)
-            .setPositiveButton(R.string.dialog_add) { dialog, which ->
-                val name = inputName.text.toString().trim()
-                val caloriesPer100g = inputCalories.text.toString().toIntOrNull()
-                val proteinPer100g = inputProtein.text.toString().toDoubleOrNull()
-                val fatPer100g = inputFat.text.toString().toDoubleOrNull()
-                val carbsPer100g = inputCarbs.text.toString().toDoubleOrNull()
-                val category = spinnerCategory.selectedItem.toString()
-
-                if (name.isEmpty() || caloriesPer100g == null || proteinPer100g == null || fatPer100g == null || carbsPer100g == null) {
-                    Toast.makeText(this, R.string.fields_warning, Toast.LENGTH_LONG).show()
-                    return@setPositiveButton
-                }
-
-                val iconRes = getCategoryIconRes(category)
-
-                val newFood = Food(
-                    name = name,
-                    caloriesPer100g = caloriesPer100g,
-                    proteinPer100g = proteinPer100g,
-                    fatPer100g = fatPer100g,
-                    carbsPer100g = carbsPer100g,
-                    category = category,
-                    weight = 100
-                )
-                FoodDatabase.availableFoods.add(newFood)
-
-                Toast.makeText(this, getString(R.string.food_created_toast, name), Toast.LENGTH_SHORT).show()
-            }
-            .setNegativeButton(R.string.dialog_cancel, null)
-            .show()
-    }
-
-    private fun refreshSection(container: LinearLayout, foods: List<Food>) {
-        container.removeAllViews()
-        for (food in foods) addFoodCard(container, food)
-    }
-
-    private fun addFoodCard(container: LinearLayout, food: Food) {
-        val card = layoutInflater.inflate(R.layout.food_card, container, false)
-        val icon = card.findViewById<ImageView>(R.id.foodIcon)
-        val text = card.findViewById<TextView>(R.id.foodText)
-        val btnDetails = card.findViewById<ImageButton>(R.id.btnDetails)
-
-        icon.setImageResource(getCategoryIconRes(food.category))
-        text.text = getString(R.string.food_card_format, food.name, food.weight, food.calories)
-
-        val animation = AnimationUtils.loadAnimation(this, R.anim.food_card_appear)
-        card.startAnimation(animation)
-
-        btnDetails.setOnClickListener { showFoodDetailsDialog(food) }
-
-        container.addView(card)
-    }
-
-    private fun showFoodDetailsDialog(food: Food) {
-        val builder = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(R.layout.dialog_food, null)
-
-        val icon = view.findViewById<ImageView>(R.id.foodIcon)
-        val name = view.findViewById<TextView>(R.id.foodName)
-        val grams = view.findViewById<TextView>(R.id.foodWeight)
-        val calories = view.findViewById<TextView>(R.id.foodCalories)
-        val kbju = view.findViewById<TextView>(R.id.foodKBJU)
-        val category = view.findViewById<TextView>(R.id.foodCategory)
-
-        icon.setImageResource(getCategoryIconRes(food.category))
-        name.text = food.name
-        grams.text = getString(R.string.food_weight, food.weight)
-        calories.text = getString(R.string.calories_label, food.calories)
-        kbju.text = getString(R.string.kbju_format, food.protein, food.fat, food.carbs)
-        category.text = getString(R.string.category_label, food.category)
-
-        builder.setView(view)
-        builder.setPositiveButton(R.string.dialog_close, null)
-        builder.show()
-    }
-
-    private fun updateSectionTotal(list: List<Food>, textView: TextView, kbjuView: TextView) {
-        val calories = list.sumOf { it.calories }
-        val protein = list.sumOf { it.protein.toDouble() }.toFloat()
-        val fat = list.sumOf { it.fat.toDouble() }.toFloat()
-        val carbs = list.sumOf { it.carbs.toDouble() }.toFloat()
-
-        textView.text = getString(R.string.calories_value, calories)
-        kbjuView.text = getString(R.string.kbju_format, protein, fat, carbs)
-    }
-
-    private fun updateDayTotal() {
-        val allFoods = morningList + lunchList + dinnerList + snackList
-        val calories = allFoods.sumOf { it.calories }
-        val protein = allFoods.sumOf { it.protein.toDouble() }.toFloat()
-        val fat = allFoods.sumOf { it.fat.toDouble() }.toFloat()
-        val carbs = allFoods.sumOf { it.carbs.toDouble() }.toFloat()
-
-        totalDay.text = getString(R.string.calories_value, calories)
-        totalKBJU.text = getString(R.string.kbju_format, protein, fat, carbs)
-    }
-
-    private fun getCategoryIconRes(category: String): Int = when (category) {
-        "Фрукты/ягоды" -> R.drawable.fruits
-        "Овощи" -> R.drawable.vegetables
-        "Мясо/птица" -> R.drawable.meat
-        "Рыба/морепродукты" -> R.drawable.seafood
-        "Молочные/яйца" -> R.drawable.eggmilk
-        "Крупы/хлеб" -> R.drawable.bread
-        "Напитки" -> R.drawable.drinks
-        "Сладости/выпечка" -> R.drawable.sweets
-        else -> R.drawable.other
     }
 }

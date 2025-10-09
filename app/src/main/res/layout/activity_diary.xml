@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -24,18 +22,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Дневник и калории -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="8dp">
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-
                     <TextView
                         android:id="@+id/diaryTitle"
                         android:layout_width="0dp"
@@ -46,13 +41,11 @@
                         android:textStyle="bold"
                         android:textColor="?android:textColorPrimary" />
                 </LinearLayout>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="4dp">
-
                     <TextView
                         android:id="@+id/dayKBJU"
                         android:layout_width="0dp"
@@ -61,7 +54,6 @@
                         android:text="@string/kbju_format"
                         android:textSize="14sp"
                         android:textColor="?android:textColorSecondary"/>
-
                     <TextView
                         android:id="@+id/dayCalories"
                         android:layout_width="wrap_content"
@@ -72,409 +64,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- Завтрак -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/cardBackgroundColor">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/morningIcon"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/breakfast"
-                            android:contentDescription="@string/breakfast_icon"
-                            android:layout_marginEnd="8dp"/>
-
-                        <TextView
-                            android:id="@+id/morningTitle"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/morning_title"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?android:textColorPrimary"/>
-
-                        <TextView
-                            android:id="@+id/morningCalories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/calories_value"
-                            android:textSize="16sp"
-                            android:textColor="?android:textColorPrimary"
-                            android:layout_marginEnd="8dp"/>
-
-                        <ImageButton
-                            android:id="@+id/btnAddMorning"
-                            android:layout_width="45dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/add"
-                            android:background="@null"
-                            android:contentDescription="@string/add_product_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/divider_line"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/morningKBJU"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/kbju_format"
-                            android:textSize="13sp"
-                            android:textColor="?android:textColorSecondary"/>
-
-                        <ImageButton
-                            android:id="@+id/btnToggleMorning"
-                            android:layout_width="45dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/arrow_down"
-                            android:background="@null"
-                            android:contentDescription="@string/arrow_down_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/containerMorning"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Обед -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/cardBackgroundColor">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/lunchIcon"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:src="@drawable/lunch"
-                            android:contentDescription="@string/lunch_icon"
-                            android:layout_marginEnd="8dp"/>
-
-                        <TextView
-                            android:id="@+id/lunchTitle"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/lunch_title"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?android:textColorPrimary"/>
-
-                        <TextView
-                            android:id="@+id/lunchCalories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/calories_value"
-                            android:textSize="16sp"
-                            android:textColor="?android:textColorPrimary"
-                            android:layout_marginEnd="8dp"/>
-
-                        <ImageButton
-                            android:id="@+id/btnAddLunch"
-                            android:layout_width="45dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/add"
-                            android:background="@null"
-                            android:contentDescription="@string/add_product_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/divider_line"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/lunchKBJU"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/kbju_format"
-                            android:textSize="13sp"
-                            android:textColor="?android:textColorSecondary"/>
-
-                        <ImageButton
-                            android:id="@+id/btnToggleLunch"
-                            android:layout_width="45dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/arrow_down"
-                            android:background="@null"
-                            android:contentDescription="@string/arrow_down_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/containerLunch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Ужин -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/cardBackgroundColor">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:id="@+id/dinnerIcon"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:src="@drawable/dinner"
-                            android:contentDescription="@string/dinner_icon"
-                            android:layout_marginEnd="8dp"/>
-
-                        <TextView
-                            android:id="@+id/dinnerTitle"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dinner_title"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?android:textColorPrimary"/>
-
-                        <TextView
-                            android:id="@+id/dinnerCalories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/calories_value"
-                            android:textSize="16sp"
-                            android:textColor="?android:textColorPrimary"
-                            android:layout_marginEnd="8dp"/>
-
-                        <ImageButton
-                            android:id="@+id/btnAddDinner"
-                            android:layout_width="45dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/add"
-                            android:background="@null"
-                            android:contentDescription="@string/add_product_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/divider_line"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/dinnerKBJU"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/kbju_format"
-                            android:textSize="13sp"
-                            android:textColor="?android:textColorSecondary"/>
-
-                        <ImageButton
-                            android:id="@+id/btnToggleDinner"
-                            android:layout_width="45dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/arrow_down"
-                            android:background="@null"
-                            android:contentDescription="@string/arrow_down_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/containerDinner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Перекус -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                app:cardBackgroundColor="?attr/cardBackgroundColor">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/snackIcon"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:src="@drawable/snack"
-                            android:contentDescription="@string/snack_icon"
-                            android:layout_marginEnd="8dp"/>
-
-                        <TextView
-                            android:id="@+id/snackTitle"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/snack_title"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="?android:textColorPrimary"/>
-
-                        <TextView
-                            android:id="@+id/snackCalories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/calories_value"
-                            android:textSize="16sp"
-                            android:textColor="?android:textColorPrimary"
-                            android:layout_marginEnd="8dp"/>
-
-                        <ImageButton
-                            android:id="@+id/btnAddSnack"
-                            android:layout_width="45dp"
-                            android:layout_height="36dp"
-                            android:src="@drawable/add"
-                            android:background="@null"
-                            android:contentDescription="@string/add_product_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/divider_line"
-                        android:layout_marginTop="4dp"
-                        android:layout_marginBottom="4dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp">
-
-                        <TextView
-                            android:id="@+id/snackKBJU"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:text="@string/kbju_format"
-                            android:textSize="13sp"
-                            android:textColor="?android:textColorSecondary"/>
-
-                        <ImageButton
-                            android:id="@+id/btnToggleSnack"
-                            android:layout_width="45dp"
-                            android:layout_height="28dp"
-                            android:src="@drawable/arrow_down"
-                            android:background="@null"
-                            android:contentDescription="@string/arrow_down_icon"
-                            android:scaleType="centerInside" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/containerSnack"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            <include android:id="@+id/morningSection" layout="@layout/layout_meal_section" />
+            <include android:id="@+id/lunchSection" layout="@layout/layout_meal_section" />
+            <include android:id="@+id/dinnerSection" layout="@layout/layout_meal_section" />
+            <include android:id="@+id/snackSection" layout="@layout/layout_meal_section" />
 
         </LinearLayout>
     </ScrollView>

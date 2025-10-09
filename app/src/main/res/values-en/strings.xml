@@ -60,4 +60,12 @@
     <string name="dialog_search_hint">Product search…</string>
     <string name="category_label_short">Category</string>
     <string name="category_other">Other</string>
+    <string name="category_fruits">Fruits/berries</string>
+    <string name="category_vegetables">Vegetables</string>
+    <string name="category_meat">Meat/poultry</string>
+    <string name="category_seafood">Fish/seafood</string>
+    <string name="category_dairy_eggs">Dairy/eggs</string>
+    <string name="category_grains">Cereals/bread</string>
+    <string name="category_drinks">Drinks</string>
+    <string name="category_sweets">Sweets/pastries</string>
 </resources>

@@ -61,4 +61,12 @@
     <string name="dialog_search_hint">Поиск продукта...</string>
     <string name="category_label_short">Категория</string>
     <string name="category_other">Другое</string>
+    <string name="category_fruits">Фрукты/ягоды</string>
+    <string name="category_vegetables">Овощи</string>
+    <string name="category_meat">Мясо/птица</string>
+    <string name="category_seafood">Рыба/морепродукты</string>
+    <string name="category_dairy_eggs">Молочные/яйца</string>
+    <string name="category_grains">Крупы/хлеб</string>
+    <string name="category_drinks">Напитки</string>
+    <string name="category_sweets">Сладости/выпечка</string>
 </resources>

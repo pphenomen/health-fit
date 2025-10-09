@@ -5,18 +5,14 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputLayout
 import java.util.regex.Pattern
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : BaseActivity() {
+
     private val VALID_INPUT_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$")
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val pref = getSharedPreferences("prefs", MODE_PRIVATE)
-        val isDark = pref.getBoolean("dark_theme", false)
-        setTheme(if (isDark) R.style.Theme_HealthFit_Dark else R.style.Theme_HealthFit)
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
@@ -26,7 +22,8 @@ class RegisterActivity : AppCompatActivity() {
         val buttonRegister = findViewById<Button>(R.id.buttonRegister)
         val loginLink = findViewById<TextView>(R.id.loginLink)
 
-        buttonRegister.setOnClickListener { view ->
+        // обработка нажатия "зарегистрироваться"
+        buttonRegister.setOnClickListener {
             val login = loginLayout.editText?.text.toString().trim()
             val password = passwordLayout.editText?.text.toString().trim()
             val confirmPassword = confirmPasswordLayout.editText?.text.toString().trim()
@@ -36,38 +33,23 @@ class RegisterActivity : AppCompatActivity() {
             confirmPasswordLayout.error = null
 
             when {
-                login.isBlank() -> {
-                    loginLayout.error = getString(R.string.enter_login)
-                    return@setOnClickListener
-                }
-                password.isBlank() -> {
-                    passwordLayout.error = getString(R.string.enter_password)
-                    return@setOnClickListener
-                }
-                confirmPassword.isBlank() -> {
-                    confirmPasswordLayout.error = getString(R.string.enter_password)
-                    return@setOnClickListener
-                }
-                !VALID_INPUT_PATTERN.matcher(login).matches() -> {
-                    loginLayout.error = getString(R.string.login_pattern)
-                    return@setOnClickListener
-                }
-                !VALID_INPUT_PATTERN.matcher(password).matches() -> {
-                    passwordLayout.error = getString(R.string.login_pattern)
-                    return@setOnClickListener
-                }
-                password != confirmPassword -> {
-                    confirmPasswordLayout.error = getString(R.string.password_fail)
-                    return@setOnClickListener
-                }
+                login.isBlank() -> loginLayout.error = getString(R.string.enter_login)
+                password.isBlank() -> passwordLayout.error = getString(R.string.enter_password)
+                confirmPassword.isBlank() -> confirmPasswordLayout.error = getString(R.string.enter_password)
+                !VALID_INPUT_PATTERN.matcher(login).matches() -> loginLayout.error = getString(R.string.login_pattern)
+                !VALID_INPUT_PATTERN.matcher(password).matches() -> passwordLayout.error = getString(R.string.login_pattern)
+                password != confirmPassword -> confirmPasswordLayout.error = getString(R.string.password_fail)
                 else -> {
+                    // успешная регистрация
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
                     Toast.makeText(this, getString(R.string.register_success), Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
                 }
             }
         }
 
+        // обработка нажатия "войти"
         loginLink.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

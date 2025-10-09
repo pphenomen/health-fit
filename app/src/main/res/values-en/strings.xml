@@ -48,4 +48,16 @@
     <string name="dinner_icon">Dinner icon</string>
     <string name="snack_icon">Snack icon</string>
     <string name="change_theme">Change the theme</string>
+    <string name="dialog_add_custom_food">Add your product</string>
+    <string name="dialog_custom_food_title">Product creation (per 100g)</string>
+    <string name="dialog_custom_name_hint">Product name</string>
+    <string name="dialog_custom_calories_hint">Calories (kcal)</string>
+    <string name="dialog_custom_protein_hint">Protein (g)</string>
+    <string name="dialog_custom_fat_hint">Fats (g)</string>
+    <string name="dialog_custom_carbs_hint">Carbs (g)</string>
+    <string name="dialog_add">Add</string>
+    <string name="food_created_toast">The product "%s" has been created and added to the database</string>
+    <string name="dialog_search_hint">Product search…</string>
+    <string name="category_label_short">Category</string>
+    <string name="category_other">Other</string>
 </resources>

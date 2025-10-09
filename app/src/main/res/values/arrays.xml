@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="food_categories">
+        <item>Фрукты/ягоды</item>
+        <item>Овощи</item>
+        <item>Мясо/птица</item>
+        <item>Рыба/морепродукты</item>
+        <item>Молочные/яйца</item>
+        <item>Крупы/хлеб</item>
+        <item>Напитки</item>
+        <item>Сладости/выпечка</item>
+    </string-array>
+</resources>

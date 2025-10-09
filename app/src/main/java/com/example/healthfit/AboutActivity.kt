@@ -6,6 +6,10 @@ import androidx.appcompat.widget.Toolbar
 
 class AboutActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        val pref = getSharedPreferences("prefs", MODE_PRIVATE)
+        val isDark = pref.getBoolean("dark_theme", false)
+        setTheme(if (isDark) R.style.Theme_HealthFit_Dark else R.style.Theme_HealthFit)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 

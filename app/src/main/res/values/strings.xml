@@ -49,5 +49,16 @@
     <string name="dinner_icon">Иконка ужина</string>
     <string name="snack_icon">Иконка перекуса</string>
     <string name="change_theme">Сменить тему</string>
-
+    <string name="dialog_add_custom_food">Добавить свой продукт</string>
+    <string name="dialog_custom_food_title">Создание продукта (на 100 г)</string>
+    <string name="dialog_custom_name_hint">Название продукта</string>
+    <string name="dialog_custom_calories_hint">Калории (ккал)</string>
+    <string name="dialog_custom_protein_hint">Белки (г)</string>
+    <string name="dialog_custom_fat_hint">Жиры (г)</string>
+    <string name="dialog_custom_carbs_hint">Углеводы (г)</string>
+    <string name="dialog_add">Добавить</string>
+    <string name="food_created_toast">Продукт "%s" создан и добавлен в базу</string>
+    <string name="dialog_search_hint">Поиск продукта...</string>
+    <string name="category_label_short">Категория</string>
+    <string name="category_other">Другое</string>
 </resources>

@@ -16,6 +16,14 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.isGone
 import java.util.*
 import androidx.core.content.edit
+import android.widget.EditText
+import android.widget.ListView
+import android.widget.Button
+import android.widget.Spinner
+import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import com.example.healthfit.R
 
 class DiaryActivity : AppCompatActivity() {
 
@@ -129,6 +137,11 @@ class DiaryActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.menu_about -> {
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.action_theme -> {
                 val pref = getSharedPreferences("prefs", MODE_PRIVATE)
                 val isDark = !pref.getBoolean("dark_theme", false)
@@ -163,35 +176,121 @@ class DiaryActivity : AppCompatActivity() {
         sectionTotal: TextView,
         sectionKBJU: TextView
     ) {
-        val foodNames = FoodDatabase.availableFoods.map { it.name }.toTypedArray()
+        val dialogView = layoutInflater.inflate(R.layout.food_list, null)
+        val listView = dialogView.findViewById<ListView>(R.id.foodListView)
+        val searchInput = dialogView.findViewById<EditText>(R.id.foodSearchInput)
+        val btnAddCustom = dialogView.findViewById<Button>(R.id.btnAddCustom)
+
+        var filteredFoods = FoodDatabase.availableFoods.toList()
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            filteredFoods.map { it.name }
+        )
+        listView.adapter = adapter
+
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.dialog_food_title)
+            .setView(dialogView)
+            .setNegativeButton(R.string.dialog_cancel, { dialogInterface, which -> dialogInterface.dismiss() })
+            .create()
+
+        searchInput.addTextChangedListener { editable ->
+            val query = editable.toString().trim().lowercase()
+            filteredFoods = if (query.isEmpty()) {
+                FoodDatabase.availableFoods.toList()
+            } else {
+                FoodDatabase.availableFoods.filter { it.name.lowercase().contains(query) }
+            }
+
+            adapter.clear()
+            adapter.addAll(filteredFoods.map { it.name })
+            adapter.notifyDataSetChanged()
+        }
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            dialog.dismiss()
+            val selectedFood = filteredFoods[position]
+
+            val input = EditText(this)
+            input.hint = getString(R.string.dialog_weight_hint)
+            input.inputType = InputType.TYPE_CLASS_NUMBER
+
+            AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_weight_title)
+                .setView(input)
+                .setPositiveButton(R.string.dialog_ok) { _, _ ->
+                    val grams = input.text.toString().toIntOrNull() ?: 100
+                    val existing = targetList.find { it.name == selectedFood.name }
+                    val foodToAdd = selectedFood.copy(weight = grams)
+                    if (existing != null) existing.weight += grams
+                    else targetList.add(foodToAdd)
+
+                    refreshSection(container, targetList)
+                    updateSectionTotal(targetList, sectionTotal, sectionKBJU)
+                    updateDayTotal()
+
+                    Toast.makeText(this, R.string.food_added_toast, Toast.LENGTH_SHORT).show()
+                }
+                .setNegativeButton(R.string.dialog_cancel, null)
+                .show()
+        }
+        btnAddCustom.setOnClickListener {
+            dialog.dismiss()
+            showCustomFoodDialog()
+        }
+
+        dialog.show()
+    }
+
+    private fun showCustomFoodDialog() {
+        val categoryNames = listOf(*resources.getStringArray(R.array.food_categories), getString(R.string.category_other))
+
+        val dialogView = layoutInflater.inflate(R.layout.add_custom_food, null)
+
+        val inputName = dialogView.findViewById<EditText>(R.id.inputFoodName)
+        val inputCalories = dialogView.findViewById<EditText>(R.id.inputCalories)
+        val inputProtein = dialogView.findViewById<EditText>(R.id.inputProtein)
+        val inputFat = dialogView.findViewById<EditText>(R.id.inputFat)
+        val inputCarbs = dialogView.findViewById<EditText>(R.id.inputCarbs)
+        val spinnerCategory = dialogView.findViewById<Spinner>(R.id.spinnerCategory)
+
+        // Setup Spinner
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categoryNames)
+        spinnerCategory.adapter = adapter
 
         AlertDialog.Builder(this)
-            .setTitle(R.string.dialog_food_title)
-            .setItems(foodNames) { _, which ->
-                val selectedFood = FoodDatabase.availableFoods[which]
+            .setTitle(R.string.dialog_custom_food_title)
+            .setView(dialogView)
+            .setPositiveButton(R.string.dialog_add) { dialog, which ->
+                val name = inputName.text.toString().trim()
+                val caloriesPer100g = inputCalories.text.toString().toIntOrNull()
+                val proteinPer100g = inputProtein.text.toString().toDoubleOrNull()
+                val fatPer100g = inputFat.text.toString().toDoubleOrNull()
+                val carbsPer100g = inputCarbs.text.toString().toDoubleOrNull()
+                val category = spinnerCategory.selectedItem.toString()
 
-                val input = EditText(this)
-                input.hint = getString(R.string.dialog_weight_hint)
-                input.inputType = InputType.TYPE_CLASS_NUMBER
+                if (name.isEmpty() || caloriesPer100g == null || proteinPer100g == null || fatPer100g == null || carbsPer100g == null) {
+                    Toast.makeText(this, R.string.fields_warning, Toast.LENGTH_LONG).show()
+                    return@setPositiveButton
+                }
 
-                AlertDialog.Builder(this)
-                    .setTitle(R.string.dialog_weight_title)
-                    .setView(input)
-                    .setPositiveButton(R.string.dialog_ok) { _, _ ->
-                        val grams = input.text.toString().toIntOrNull() ?: 100
-                        val existing = targetList.find { it.name == selectedFood.name }
-                        if (existing != null) existing.weight += grams
-                        else targetList.add(selectedFood.copy(weight = grams))
+                val iconRes = getCategoryIconRes(category)
 
-                        refreshSection(container, targetList)
-                        updateSectionTotal(targetList, sectionTotal, sectionKBJU)
-                        updateDayTotal()
+                val newFood = Food(
+                    name = name,
+                    caloriesPer100g = caloriesPer100g,
+                    proteinPer100g = proteinPer100g,
+                    fatPer100g = fatPer100g,
+                    carbsPer100g = carbsPer100g,
+                    category = category,
+                    weight = 100
+                )
+                FoodDatabase.availableFoods.add(newFood)
 
-                        Toast.makeText(this, R.string.food_added_toast, Toast.LENGTH_SHORT).show()
-                    }
-                    .setNegativeButton(R.string.dialog_cancel, null)
-                    .show()
+                Toast.makeText(this, getString(R.string.food_created_toast, name), Toast.LENGTH_SHORT).show()
             }
+            .setNegativeButton(R.string.dialog_cancel, null)
             .show()
     }
 

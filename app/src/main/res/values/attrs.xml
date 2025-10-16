@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="addIcon" format="reference" />
+    <attr name="toggleIconDown" format="reference" />
+    <attr name="toggleIconUp" format="reference" />
+</resources>

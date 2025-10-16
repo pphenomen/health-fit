@@ -64,9 +64,6 @@ class MealManager(
             text.text = context.getString(R.string.food_card_format, food.name, food.weight, food.calories)
 
             btnDetails.setOnClickListener { dialogManager.showFoodDetailsDialog(food) }
-
-            val animation = AnimationUtils.loadAnimation(context, R.anim.food_card_appear)
-            card.startAnimation(animation)
             binding.container.addView(card)
         }
     }
@@ -96,10 +93,12 @@ class MealManager(
         binding.btnToggle.setOnClickListener {
             if (binding.container.isGone) {
                 binding.container.visibility = View.VISIBLE
-                binding.btnToggle.setImageResource(R.drawable.arrow_up)
+                val animation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+                binding.container.layoutAnimation = animation
+                binding.btnToggle.setImageResource(context.resolveThemeAttr(R.attr.toggleIconUp))
             } else {
                 binding.container.visibility = View.GONE
-                binding.btnToggle.setImageResource(R.drawable.arrow_down)
+                binding.btnToggle.setImageResource(context.resolveThemeAttr(R.attr.toggleIconDown))
             }
         }
     }

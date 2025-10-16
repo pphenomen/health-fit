@@ -49,7 +49,7 @@
                 android:id="@+id/btnAdd"
                 android:layout_width="45dp"
                 android:layout_height="36dp"
-                android:src="@drawable/add"
+                android:src="?attr/addIcon"
                 android:background="@null"
                 android:contentDescription="@string/add_product_icon"
                 android:scaleType="centerInside" />
@@ -83,7 +83,7 @@
                 android:id="@+id/btnToggle"
                 android:layout_width="45dp"
                 android:layout_height="28dp"
-                android:src="@drawable/arrow_down"
+                android:src="?attr/toggleIconDown"
                 android:background="@null"
                 android:contentDescription="@string/arrow_down_icon"
                 android:scaleType="centerInside" />

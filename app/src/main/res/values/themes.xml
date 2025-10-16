@@ -16,6 +16,9 @@
         <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/black</item>
         <item name="cardBackgroundColor">@color/card_background_light</item>
+        <item name="addIcon">@drawable/add</item>
+        <item name="toggleIconDown">@drawable/arrow_down</item>
+        <item name="toggleIconUp">@drawable/arrow_up</item>
     </style>
 
     <style name="Theme.HealthFit.Dark" parent="Theme.AppCompat.NoActionBar">
@@ -27,5 +30,8 @@
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
         <item name="cardBackgroundColor">@color/card_background_dark</item>
+        <item name="addIcon">@drawable/add_white</item>
+        <item name="toggleIconDown">@drawable/arrow_down_white</item>
+        <item name="toggleIconUp">@drawable/arrow_up_white</item>
     </style>
 </resources>

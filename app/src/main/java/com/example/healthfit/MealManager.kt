@@ -48,7 +48,7 @@ class MealManager(
         }
         refreshFoodCards()
         updateSectionTotal()
-        onUpdate() // Сообщаем главной активности об обновлении
+        onUpdate()
     }
 
     // обновляет отображение карточек продуктов в контейнере

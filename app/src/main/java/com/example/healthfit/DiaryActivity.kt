@@ -10,13 +10,12 @@ import androidx.core.content.edit
 import com.example.healthfit.databinding.ActivityDiaryBinding
 import java.util.*
 
-class DiaryActivity : AppCompatActivity() {
+class DiaryActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDiaryBinding
     private val mealManagers = mutableListOf<MealManager>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        applyTheme()
         super.onCreate(savedInstanceState)
         binding = ActivityDiaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -24,13 +23,6 @@ class DiaryActivity : AppCompatActivity() {
         setupToolbar()
         setupMealManagers()
         resetTotals()
-    }
-
-    // применяет сохраненную тему (светлую/темную)
-    private fun applyTheme() {
-        val pref = getSharedPreferences("prefs", MODE_PRIVATE)
-        val isDark = pref.getBoolean("dark_theme", false)
-        setTheme(if (isDark) R.style.Theme_HealthFit_Dark else R.style.Theme_HealthFit)
     }
 
     // настраивает тулбар
